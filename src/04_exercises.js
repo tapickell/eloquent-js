@@ -225,3 +225,61 @@ function random_point_on_circle(radius) {
 }
 
 console.log(random_point_on_circle(2))
+
+let kim = "Kim"
+console.log(kim)
+console.log(kim[0])
+
+let list = [kim, "frank", "bob"]
+list.age = 42
+list.name = "Frank"
+console.log(list)
+console.log(list.age)
+console.log(list.name)
+console.log(list[1])
+let {age} = list
+console.log(age)
+
+function range(start, end, step) {
+  let arr = []
+  step = (typeof step !== 'undefined') ? step : 1
+  if (step === 0) return arr
+  if (step < 0) {
+    for (let index = start; index > end-1; index += step) { arr.push(index) }
+  } else {
+    for (let index = start; index < end+1; index += step) { arr.push(index) }
+  }
+  return arr
+}
+
+function sum(list) {
+  return list.reduce((prev, curr) => prev + curr)
+}
+console.log(range(1, 10))
+console.log(range(1, 10).length == 10)
+console.log(sum(range(1, 10)))
+console.log(range(1,5,2))
+console.log(range(5,2,-1))
+console.log(range(5,20,-1))
+console.log(range(5,2))
+console.log(range(1, 10, 0))
+
+function reverseArray(list) {
+  let copy = list.splice()
+  for (let element of list) { copy.unshift(element) }
+  return copy
+}
+
+function reverseArrayInPlace(list) {
+  for (let index = 0; index < Math.floor(list.length/2); index++) {
+    let opposite_index = list.length - 1 - index
+    let hd = list[index], tl = list[opposite_index]
+    list[index] = tl
+    list[opposite_index] = hd
+  }
+}
+
+console.log(reverseArray(range(1,10)))
+let this_list = range(1,10)
+reverseArrayInPlace(this_list)
+console.log(this_list)
