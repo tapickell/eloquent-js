@@ -1,3 +1,4 @@
+const util = require('util');
 
 var again = function() { console.log("\nAgain....\n")};
 var new_exercise = function() { console.log("\nLet's try something different now.\n\n\n")};
@@ -283,3 +284,87 @@ console.log(reverseArray(range(1,10)))
 let this_list = range(1,10)
 reverseArrayInPlace(this_list)
 console.log(this_list)
+const stuff_constant = "HEY"
+stuff = "HEY"
+
+// here is a comment
+var assert = function(expected, actual, message = "Test") {
+  if (isObject(expected)) expected = JSON.stringify(expected)
+  if (isObject(actual)) actual = JSON.stringify(actual)
+  if (expected === actual) {
+    console.log('👍  ' + message)
+  } else {
+    console.log('💩  ' + message + "\n   Assertion failed no match\n   " + util.inspect(expected) + "\n   " + util.inspect(actual));
+  }
+}
+
+var assert_true = function(actual, message) {
+  assert(true, actual, message)
+}
+var assert_false = function(actual, message) {
+  assert(false, actual, message)
+}
+
+function prepend(node, list) {
+  return { value: node, rest: list }
+}
+
+function arrayToList(arr) {
+  return arr.reduceRight(
+    (list, value) => prepend(value, list)
+  , null)
+}
+
+assert({ value: 50, rest: null }, prepend(50, null), "prepend 50, null")
+assert({value: 10, rest: {value: 20, rest: null}}, arrayToList([10, 20]), "arrayToList")
+
+function listToArray(list) {
+  if (list.rest == null) return list.value
+  return [list.value].concat(listToArray(list.rest))
+}
+
+assert([10, 20], listToArray({value: 10, rest: {value: 20, rest: null}}), "listToArray")
+
+function nthInList(list, index) {
+  if (index == 0) return list.value
+  return nthInList(list.rest, index - 1)
+}
+
+assert(10, nthInList(arrayToList([10, 20, 30]), 0), "0 nth")
+assert(20, nthInList(arrayToList([10, 20, 30]), 1), "1 nth")
+assert(30, nthInList(arrayToList([10, 20, 30]), 2), "2 nth")
+
+function convertObjectToJSON(value) {
+  if (isObject(value)) return JSON.stringify(value)
+  return value
+}
+
+function deepEqual(value1, value2) {
+  return convertObjectToJSON(value1) === convertObjectToJSON(value2)
+}
+
+function isObject(value) {
+  return typeof value === "object" && value != null
+}
+
+function assert_equal(value1, value2) {
+  if (isObject(value1) && isObject(value2)) {
+    if (Object.keys(value1) === Object.keys(value2)) {
+      return Object.values(value1).map(
+        (current, index) => assert_equal(current, Object.values(value2)[index])
+      ).every((value) => value == true)
+    }
+    return false
+  }
+  return value1 === value2
+}
+
+let test_obj = {here: {is: "an"}, object: 2}
+
+assert_true(deepEqual(test_obj, test_obj), "test_obj == self")
+assert_false(deepEqual(test_obj, {here: 1, object: 2}), "test_obj != other obj")
+assert_true(deepEqual(test_obj, {here: {is: "an"}, object: 2}), "test_obj == new duplicate obj")
+
+assert_true(assert_equal(test_obj, test_obj), "test_obj == self")
+assert_false(assert_equal(test_obj, {here: 1, object: 2}), "test_obj != other obj")
+assert_true(assert_equal(test_obj, {here: {is: "an"}, object: 2}), "test_obj == new duplicate obj")
