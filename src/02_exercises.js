@@ -29,7 +29,7 @@ again();
 
 again();
 
-var range = Array.apply(null, {length: 8}).map(Number.call, Number)
+var range = Array.apply(null, {length: 100}).map(Number.call, Number)
 
 range.forEach(times => {
   // console.log("#".repeat(times));

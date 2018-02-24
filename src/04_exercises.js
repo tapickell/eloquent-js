@@ -304,6 +304,7 @@ var assert_true = function(actual, message) {
 var assert_false = function(actual, message) {
   assert(false, actual, message)
 }
+assert(["_", "o", "o", "_"], ["_", "o", "o", "_"], "These are the same yo")
 
 function prepend(node, list) {
   return { value: node, rest: list }
