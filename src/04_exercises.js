@@ -288,10 +288,21 @@ const stuff_constant = "HEY"
 stuff = "HEY"
 
 // here is a comment
-var assert = function(expected, actual, message = "Test") {
-  if (isObject(expected)) expected = JSON.stringify(expected)
-  if (isObject(actual)) actual = JSON.stringify(actual)
-  if (expected === actual) {
+function isObject(value) {
+  return typeof value === "object" && value != null
+}
+
+function convertObjectToJSON(value) {
+  if (isObject(value)) return JSON.stringify(value)
+  return value
+}
+
+function deepEqual(value1, value2) {
+  return convertObjectToJSON(value1) === convertObjectToJSON(value2)
+}
+
+function assert (expected, actual, message = "Test") {
+  if (deepEqual(expected, actual)) {
     console.log('👍  ' + message)
   } else {
     console.log('💩  ' + message + "\n   Assertion failed no match\n   " + util.inspect(expected) + "\n   " + util.inspect(actual));
@@ -335,18 +346,6 @@ assert(10, nthInList(arrayToList([10, 20, 30]), 0), "0 nth")
 assert(20, nthInList(arrayToList([10, 20, 30]), 1), "1 nth")
 assert(30, nthInList(arrayToList([10, 20, 30]), 2), "2 nth")
 
-function convertObjectToJSON(value) {
-  if (isObject(value)) return JSON.stringify(value)
-  return value
-}
-
-function deepEqual(value1, value2) {
-  return convertObjectToJSON(value1) === convertObjectToJSON(value2)
-}
-
-function isObject(value) {
-  return typeof value === "object" && value != null
-}
 
 function assert_equal(value1, value2) {
   if (isObject(value1) && isObject(value2)) {
